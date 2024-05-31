@@ -1,0 +1,16 @@
+{
+  "name": "cms",
+  "version": "1.0.0",
+  "description": "\"CTF Management System is a powerful Discord bot designed by n1ghtf4ll and the FPTU - Ethical Hackers Club to streamline the management of Capture The Flag (CTF) competitions. Perfect for organizers and participants, this bot simplifies team management, flag submission, and submission statistics tracking, ensuring a smooth and engaging experience.\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.2",
+    "discord.js": "^14.15.2",
+    "dotenv": "^16.4.5"
+  }
+}
