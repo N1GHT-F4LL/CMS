@@ -5,6 +5,7 @@ require('dotenv').config();
 const { Client, GatewayIntentBits } = require('discord.js');
 const { handleInteractionCreate } = require('./handlers/interactionHandlers');
 const TeamManager = require('./bot_modules/team');
+const EventManager = require('./bot_modules/event');
 
 const client = new Client({
   intents: [
@@ -16,6 +17,7 @@ const client = new Client({
 });
 
 const teamManager = new TeamManager();
+const eventManager = new EventManager();
 const prefix = process.env.PREFIX || '/';
 
 // Create a log file and set up a new Console for logging to that file
@@ -29,7 +31,7 @@ client.once('ready', () => {
   logger.log('Bot is now online!');
 });
 
-client.on('interactionCreate', (interaction) => handleInteractionCreate(interaction, teamManager));
+client.on('interactionCreate', (interaction) => handleInteractionCreate(interaction, teamManager, eventManager));
 
 client.login(process.env.CLIENT_TOKEN).catch(error => {
   logger.error(`Failed to log in: ${error}`);

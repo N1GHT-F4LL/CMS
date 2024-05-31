@@ -58,6 +58,52 @@ const commands = [
       },
     ],
   },
+  {
+    name: 'add-event',
+    description: 'Adds a new event',
+    options: [
+      {
+        name: 'url',
+        type: 3, // STRING type is 3
+        description: 'URL of the event',
+        required: true,
+      },
+      {
+        name: 'start_date',
+        type: 3, // STRING type is 3
+        description: 'Start date of the event (YYYY-MM-DD)',
+        required: true,
+      },
+      {
+        name: 'start_time',
+        type: 3, // STRING type is 3
+        description: 'Start time of the event (HH:mm)',
+        required: true,
+      },
+      {
+        name: 'end_date',
+        type: 3, // STRING type is 3
+        description: 'End date of the event (YYYY-MM-DD)',
+        required: true,
+      },
+      {
+        name: 'end_time',
+        type: 3, // STRING type is 3
+        description: 'End time of the event (HH:mm)',
+        required: true,
+      },
+      {
+        name: 'is_ctfd',
+        type: 5, // BOOLEAN type is 5
+        description: 'Is the event hosted on CTFd?',
+        required: false,
+      },
+    ],
+  },
+  {
+    name: 'list-events',
+    description: 'Lists all events',
+  },
 ];
 
 const rest = new REST({ version: '10' }).setToken(process.env.CLIENT_TOKEN);
