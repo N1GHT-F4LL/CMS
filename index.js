@@ -1,5 +1,9 @@
+const fs = require('fs');
+const path = require('path');
+const { Console } = require('console');
 require('dotenv').config();
 const { Client, GatewayIntentBits } = require('discord.js');
+const { handleInteractionCreate } = require('./handlers/interactionHandlers');
 const TeamManager = require('./bot_modules/team');
 
 const client = new Client({
@@ -14,31 +18,19 @@ const client = new Client({
 const teamManager = new TeamManager();
 const prefix = process.env.PREFIX || '/';
 
-client.on('messageCreate', message => {
-  console.log(`Received message: ${message.content}`); // Log the received message
-  if (message.content.startsWith(`${prefix}createteam`)) {
-    const teamName = message.content.split(' ')[1];
-    const newTeam = teamManager.createTeam(teamName, message.author.id);
-    message.channel.send(`Team ${newTeam.name} has been created!`);
-  }
+// Create a log file and set up a new Console for logging to that file
+const logFileName = 'bot.log';
+const logFilePath = path.join(__dirname, logFileName);
+const logStream = fs.createWriteStream(logFilePath, { flags: 'a' });
+const errorLogStream = fs.createWriteStream(path.join(__dirname, 'error.log'), { flags: 'a' });
+const logger = new Console({ stdout: logStream, stderr: errorLogStream });
+
+client.once('ready', () => {
+  logger.log('Bot is now online!');
 });
 
-client.on('messageCreate', message => {
-  console.log(`Received message: ${message.content}`); // Log the received message
-  if (message.content === `${prefix}listteam`) {
-    const teams = teamManager.listTeams();
-    let teamList = 'List of Teams:\n';
-    teams.forEach(team => {
-      teamList += `- ${team.name}: Captain <@${team.captain}>, Members: `;
-      team.members.forEach(member => {
-        teamList += `<@${member}> `;
-      });
-      teamList += '\n';
-    });
-    message.channel.send(teamList);
-  }
-});
+client.on('interactionCreate', (interaction) => handleInteractionCreate(interaction, teamManager));
 
-client.login(process.env.CLIENT_TOKEN).then(() => {
-  console.log('Bot is now online!');
-}).catch(console.error);
+client.login(process.env.CLIENT_TOKEN).catch(error => {
+  logger.error(`Failed to log in: ${error}`);
+});
